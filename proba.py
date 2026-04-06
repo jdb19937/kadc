@@ -140,8 +140,6 @@ print()
 # ── 5. aedificatio ───────────────────────────────────────────
 
 print("5. aedifico...")
-# prius compila singulas plicas, exclude quae fallunt
-exclusae = set()
 for plica in sorted(glob.glob(os.path.join(EXITUS, "*.c"))):
     nomen = os.path.basename(plica)
     obj = nomen.replace('.c', '.o')
@@ -150,35 +148,23 @@ for plica in sorted(glob.glob(os.path.join(EXITUS, "*.c"))):
          "-c", "-o", obj, nomen],
         cwd=EXITUS, stderr=subprocess.PIPE, stdout=subprocess.PIPE,
     )
-    ne = res.stderr.decode(errors='replace').count('error:')
+    stderr = res.stderr.decode(errors='replace')
+    ne = stderr.count('error:')
+    nw = stderr.count('warning:')
     if ne:
-        exclusae.add(nomen)
-        print(f"   {nomen:<24s} EXCLUSA ({ne} errores)")
+        print(f"   {nomen:<24s} ERRATUM ({ne} errores)")
+        for linea in stderr.splitlines():
+            print(f"      {linea}")
+        print()
+        print("PROBATIO CECIDIT")
+        sys.exit(1)
+    elif nw:
+        print(f"   {nomen:<24s} OK ({nw} monitiones)")
+        for linea in stderr.splitlines():
+            if 'warning:' in linea:
+                print(f"      {linea}")
     else:
         print(f"   {nomen:<24s} OK")
-
-# rescribe Faceplica sine exclusis
-if exclusae:
-    bibliotheca = [b for b in bibliotheca if b not in exclusae]
-    objecta_bib = [f.replace('.c', '.o') for f in bibliotheca]
-    principales = [p for p in principales if p not in exclusae]
-
-    lineas = ['CC      ?= cc', 'CFLAGS  ?= -std=c99 -Wall -Wextra -I.', '']
-    executabilia = []
-    for p in principales:
-        prog = p.replace('.c', '')
-        obj_p = p.replace('.c', '.o')
-        executabilia.append(prog)
-        deps = f'{obj_p} {" ".join(objecta_bib)}'.strip()
-        lineas.append(f'{prog}: {deps}')
-        lineas.append(f'\t$(CC) $(CFLAGS) -o $@ $^')
-        lineas.append('')
-    if executabilia:
-        lineas.insert(3, f'omnia: {" ".join(executabilia)}')
-        lineas.insert(4, '')
-    lineas.append('.PHONY: omnia')
-    with open(os.path.join(EXITUS, "Faceplica"), 'w') as f:
-        f.write('\n'.join(lineas) + '\n')
 
 # aedifica executabilia
 res = subprocess.run(

@@ -344,7 +344,7 @@ def _transcribe_modum(s):
 _RE_FORMATUM = re.compile(
     r'(%[-+0 #]*(?:\d+|\*)?'
     r'(?:[\u00B7.](?:\d+|\*))?'
-    r'(?:ζ)?[σδφυ])'
+    r'(?:ζ)?[σδφυΕ])'
 )
 
 def _subst_formatum(m):
