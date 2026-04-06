@@ -1,0 +1,16 @@
+# faceplica — instrumentum aedificandi pro κadc.
+#
+# Facies:
+#   proba     — probationes currit (proba.κ et ὀμφαλός)
+#   purga     — artificia removet
+
+PYTHON ?= python3
+
+proba:
+	$(PYTHON) proba.py proba.κ proba.κ.c99
+	$(PYTHON) proba.py ὀμφαλός ὀμφαλός.c99
+
+purga:
+	rm -rf proba.κ.c99 ὀμφαλός.c99 ἔξοδος.bin __pycache__
+
+.PHONY: proba purga
