@@ -6,6 +6,9 @@
 
 PYTHON ?= python3
 
+omnia:
+	@ echo nihil agendum
+
 proba:
 	$(PYTHON) proba.py proba.κ proba.κ.c99
 	$(PYTHON) proba.py ὀμφαλός ὀμφαλός.c99
@@ -13,4 +16,4 @@ proba:
 purga:
 	rm -rf proba.κ.c99 ὀμφαλός.c99 ἔξοδος.bin __pycache__
 
-.PHONY: proba purga
+.PHONY: omnia proba purga
