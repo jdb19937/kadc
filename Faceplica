@@ -13,7 +13,10 @@ proba:
 	$(PYTHON) proba.py proba.κ proba.κ.c99
 	$(PYTHON) proba.py ὀμφαλός ὀμφαλός.c99
 
+colloca:
+	@ echo nihil collocandum
+
 purga:
 	rm -rf proba.κ.c99 ὀμφαλός.c99 ἔξοδος.bin __pycache__
 
-.PHONY: omnia proba purga
+.PHONY: omnia colloca proba purga
